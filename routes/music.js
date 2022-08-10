@@ -1,21 +1,25 @@
 const express = require('express');
-const bodyParser = require('body-parser')
 const http = require('http');
 const Music = require('../models/music');
-
 const router = express.Router();
+const sequelize = require('sequelize');
 
-router.get('/:id', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
+  const Op = sequelize.Op;
+  const get_title = req.query.post_title;
+
+  if(!get_title){
+    return res.render('input');
+  }
   try {
-    const Op = sequelize.Op;
-    const title = req.query.query;
+   
     const authCompWords = await Music.findAll({
-        where: { wordName: { [Op.like]: '%' + title + '%' } },
+        where: { title: { [Op.like]: '%' + get_title + '%' } },
       });
-      const returnData = authCompWords.map((el) => el.wordName);
-      res.status(200).json({
-        data: returnData,
-      });
+      const returnData = authCompWords.map((el) => el.title);
+      console.log(returnData);
+      return res.send(returnData);
+      
   } catch (error) {
     console.error(error);
   

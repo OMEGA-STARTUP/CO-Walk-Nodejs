@@ -2,12 +2,13 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const path = require('path');
+const nunjucks = require('nunjucks');
 const session = require('express-session');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-
+const pageRouter = require('./routes/page');
 const musicRouter = require('./routes/music');
 const { sequelize } = require('./models');
 //const passportConfig = require('./passport');
@@ -15,6 +16,11 @@ const { sequelize } = require('./models');
 const app = express();
 //passportConfig(); // 패스포트 설정
 app.set('port', process.env.PORT || 8080);
+app.set('view engine', 'html');
+nunjucks.configure('views', {
+  express: app,
+  watch: true,
+});
 sequelize.sync({ force: false })
   .then(() => {
     console.log('데이터베이스 연결 성공');
@@ -40,8 +46,7 @@ app.use(session({
 //app.use(passport.initialize());
 //app.use(passport.session());
 
-//app.use('/', pageRouter);
-
+app.use('/', pageRouter);
 app.use('/music', musicRouter);
 
 

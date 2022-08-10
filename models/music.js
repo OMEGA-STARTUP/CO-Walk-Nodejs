@@ -10,7 +10,7 @@ module.exports = class Music extends Sequelize.Model {
    
     }, {
       sequelize,
-      timestamps: true,
+      timestamps: false,
       underscored: false,
       modelName: 'Music',
       tableName: 'musics',
