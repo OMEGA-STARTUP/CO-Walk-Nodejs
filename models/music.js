@@ -4,10 +4,13 @@ module.exports = class Music extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
       title: {
-        type: Sequelize.STRING(140),
+        type: Sequelize.STRING(30),
         allowNull: false,
       },
-   
+      title1: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+      },
     }, {
       sequelize,
       timestamps: false,
