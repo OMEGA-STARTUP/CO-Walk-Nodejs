@@ -7,7 +7,14 @@ module.exports = class Music extends Sequelize.Model {
         type: Sequelize.STRING(140),
         allowNull: false,
       },
-   
+      img: {
+        type: Sequelize.STRING(200),
+        allowNull: false,
+      },
+      backgroung_url: {
+        type: Sequelize.STRING(300),
+        allowNull: false,
+      },
     }, {
       sequelize,
       timestamps: false,
@@ -20,7 +27,6 @@ module.exports = class Music extends Sequelize.Model {
     });
   }
 
-  static associate(db) {
-    
-  }
+  static associate(db) {}  
+  
 };
