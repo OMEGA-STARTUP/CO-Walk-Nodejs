@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
+const Music = require('./music');
+const User = require('./user');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];
 
-const Music = require('./music');
 
 
 const db = {};
@@ -11,8 +12,15 @@ const sequelize = new Sequelize(
 );
 
 db.sequelize = sequelize;
+
+
+
+db.User =  User;
 db.Music =  Music;
+User.init(sequelize);
 Music.init(sequelize);
+
+User.associate(db);
 Music.associate(db);
 
 module.exports = db;

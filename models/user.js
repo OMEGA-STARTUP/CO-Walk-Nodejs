@@ -1,32 +1,33 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Music extends Sequelize.Model {
+module.exports = class User extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
-    title: {
+    username: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+        unique:true,
+      },
+    password: {
         type: Sequelize.STRING(30),
         allowNull: false,
       },
-    img: {
-        type: Sequelize.STRING(300), 
+    email: {
+        type: Sequelize.STRING(30),
         allowNull: false,
-      },
-    backgroung_url: {
-        type: Sequelize.STRING(200),
-        allowNull: false,
-      },
+      },    
     }, {
       sequelize,
       timestamps: false,
       underscored: false,
-      modelName: 'Music',
-      tableName: 'musics',
+      modelName: 'User',
+      tableName: 'users',
       paranoid: false,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
     });
   }
   static associate(db) {
-    db.Music.belongsTo(db.User,{ foreignKey:'bestmusic', targetKey:'username'});
+   db.User.hasMany(db.Music,{ foreignLey:'bestmusic', sourceKey:'username'});
   }   
 };
