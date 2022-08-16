@@ -27,6 +27,6 @@ module.exports = class Music extends Sequelize.Model {
     });
   }
   static associate(db) {
-    db.Music.belongsTo(db.User,{ foreignKey:'bestmusic', targetKey:'username'});
+  
   }   
 };

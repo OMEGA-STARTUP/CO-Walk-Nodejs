@@ -10,7 +10,7 @@ dotenv.config();
 
 const pageRouter = require('./routes/page');
 const musicRouter = require('./routes/music_search');
-const bestmusicRouter = require('./routes/best_music');
+
 const { sequelize } = require('./models');
 //const passportConfig = require('./passport');
 
@@ -48,8 +48,8 @@ app.use(session({
 //app.use(passport.session());
 
 app.use('/', pageRouter);
-app.use('/music', musicRouter);
-app.use('/bestmusic',bestmusicRouter);
+app.use('/background-sounds', musicRouter);
+
 
 app.use((req, res, next) => {
   const error =  new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
