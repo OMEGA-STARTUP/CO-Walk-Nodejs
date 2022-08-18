@@ -1,23 +1,24 @@
 {
   "development": {
-    "username": "root",
+    "username": "postgres",
     "password": "cn37rqww@",
-    "database": "music_search",
+    "database": "pratice",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "password": "cn37rqww@",
+    "database": "pratice",
+    "host": "127.0.0.1", 
+    "dialect": "postgres"
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
+    "password": "cn37rqww@",
+    "database": "pratice",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+   
+    "dialect": "postgres"
   }
 }
