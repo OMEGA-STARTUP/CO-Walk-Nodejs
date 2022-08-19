@@ -50,8 +50,6 @@ app.use(session({
 //app.use(passport.initialize());
 //app.use(passport.session());
 
-
-
 app.use('/', pageRouter);
 app.use('/background-sounds', musicRouter);
 
@@ -68,6 +66,10 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+
 
 
 app.listen(app.get('port'), () => {
