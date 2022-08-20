@@ -7,18 +7,21 @@ const jwt = require('jsonwebtoken');
 const { verifyToken } = require("./middlewares");
 
 
-router.get('/', async (req, res, next) => {
+router.get('/',verifyToken, async (req, res, next) => {
   try {
-    const favorite_user = await BACKGROUND_SOUND.findAll({         //favorite 테이블에서 인코드한 user데이터 가져오기
+    
+ 
+
+    const favorite_user = await  models.BACKGROUND_SOUND.findAll({         //favorite 테이블에서 인코드한 user데이터 가져오기
       attributes:['id'],
       where: { user_id :  req.decoded  },
      });
 
-    const background_sounds = await models.comment.findAll({           
-      attributes:['id','name','sound_play_time','sound_img_url']
+    const background_sounds = await models.FAVORITE.findAll({           
+        attributes:['id','name','sound_play_time','sound_img_url']
       });
 
-      
+    
       const returnData =background_sounds.map((el) => el);
       console.log(returnData);
       return res.status(200).json(returnData);
@@ -38,7 +41,7 @@ router.get('/:background-sound-name/search', async (req, res, next) => {
   get_title0 = get_title.replace(" ", "%"); 
           //검색의 띄어쓰기 해결 맨 앞 제목 한번만 가능
   try {
-    const authCompWords = await BACKGROUND_SOUND.findAll({
+    const authCompWords = await  models.BACKGROUND_SOUND.findAll({
       attributes:['id','name','sound_play_time','sound_img_url'],
         where: { title : { [Op.like]: '%' + get_title0 + '%' } },
       });
