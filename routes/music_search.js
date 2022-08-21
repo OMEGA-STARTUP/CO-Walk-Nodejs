@@ -11,8 +11,8 @@ const { Client } = require('pg');
 const client = new Client({
     user: 'postgres',
     host: '127.0.0.1',
-    database: 'pratice',
-    password: 'cn37rqww@',
+    database: 'postgres',
+    password: 'cn37rqww',
     port: 5432
 })
 client.connect();
@@ -42,12 +42,26 @@ router.get('/search', async (req, res, next) => {
   const get_title = req.query.post_title;
   get_title0 = get_title.replace(" ", "%"); 
           //검색의 띄어쓰기 해결 맨 앞 제목 한번만 가능
-  try {
+  const id =0;
+try{   
     const authCompWords = await  models.background_sound.findAll({
-      attributes:['sound_name','sound_play_time','sound_img_url'],
+      attributes:['sound_id','sound_name','sound_play_time','sound_img_url'],
         where: { sound_name : { [Op.like]: '%' + get_title0 + '%' } },
       });
-      const returnData =authCompWords.map((el) => el);
+
+    const user_id = await models.favorite.findAll({
+      attributes:['sound_id','user_id'],
+      where :{ user_id : 0},
+    });
+
+
+
+
+      //const b=0;
+  //const returnData =authCompWords.map((el) => el);
+  //get_title1 = await client.query(`select ${authCompWords}.sound_id as sound_id, ${authCompWords}.sound_name as sound_name, ${authCompWords}.sound_play_time as sound_play_time, ${authCompWords}.sound_img_url as sound_img_url, CASE WHEN f.user_id is null THEN false else true end isFavorite from (select * from favorite where user_id = ${ b}) f right outer join background_sound bs on f.sound_id = ${authCompWords}.sound_id; `);
+
+
       if(returnData == ""){
         return res.status("404");  //해당 값이 없다는거임
       }
@@ -66,12 +80,12 @@ router.get('/search', async (req, res, next) => {
 
 router.get('/:background-sound-id/play', async (req, res, next) => {
   const Op = sequelize.Op;
-  const get_title = req.params.background-sound-id;
- 
+ const get_title = req.params.background-sound-id;
+
   try {
-    const authCompWords = await Music.findAll({
-       attributes:['id','name','sound_play_time','sound_img_url'],
-       where: { name:  get_title  },
+    const authCompWords = await models.background_sound.findAll({
+       attributes:['sound_id','sound_play_url','stepping_sounds'],
+       where: { sound_id:  get_title  },
       });
       const returnData =authCompWords.map((el) => el);
 
@@ -83,14 +97,6 @@ router.get('/:background-sound-id/play', async (req, res, next) => {
     res.status(500);
   }
 });
-
-
-
-
-
-
-
-
 
 
 
