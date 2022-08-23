@@ -7,8 +7,8 @@ const session = require('express-session');
 const dotenv = require('dotenv');
 dotenv.config();
 const pageRouter = require('./routes/page');
-const musicRouter = require('./routes/music_search');
-const SequelizeAuto = require('sequelize-auto');
+const musicsearchRouter = require('./routes/music_search_page');
+const favoriteRouter = require('./routes/favorite_page');
 const sequelize = require('sequelize');
 //const passportConfig = require('./passport');
 
@@ -21,9 +21,6 @@ nunjucks.configure('views', {
   express: app,
   watch: true,
 });
-
-
-
 /*
 sequelize.sync({ force: false })
   .then(() => {
@@ -51,8 +48,8 @@ app.use(session({
 //app.use(passport.session());
 
 app.use('/', pageRouter);
-app.use('/background-sounds', musicRouter);
-
+app.use('/background-sounds', musicsearchRouter);
+app.use('/favorites', favoriteRouter);
 
 app.use((req, res, next) => {
   const error =  new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
