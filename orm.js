@@ -1,10 +1,10 @@
+
+const SequelizeAuto = require('sequelize-auto');
 require('dotenv').config();
 const env = process.env;
 
-const SequelizeAuto = require('sequelize-auto');
-
-const auto = new SequelizeAuto( process.env.DATABASE_NAME, process.env.DATABASE_USER,  process.env.DATABASE_PASSWORD,{
-  host: process.env.DATABASE_HOST,
+const auto = new SequelizeAuto(env.DATABASE_USER,env.DATABASE_NAME,env.DATABASE_PASSWORD,{
+  host:env.DATABASE_HOST,
   port:'5432',
   dialect: "postgres"
 });
