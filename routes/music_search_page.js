@@ -11,11 +11,11 @@ const env = process.env;
 const Sequelize = require('sequelize');
 
   const client = new Client({
-    user: process.env.DATABASE_USER,
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE_NAME,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.PORT
+    user: env.DATABASE_USER,
+    host: env.DATABASE_HOST,
+    database: env.DATABASE_NAME,
+    password: env.DATABASE_PASSWORD,
+    port: env.PORT
 });
 
 client.connect();
@@ -35,7 +35,7 @@ background_sounds =await client.query(`select bs.sound_id as sound_id, bs.sound_
   }
 });
 
-router.get('/:background-sound-name/search',verifyToken, async (req, res, next) => {                             //완성 -> 소리페이지(소리검색) - jwt토큰 키 결정하기
+router.get('/:background-sound-name/search',verifyToken, async (req, res, next) => {    //완성 -> 소리페이지(소리검색) - jwt토큰 키 결정하기
   const Op = sequelize.Op;                                                    // 배열의 배열에 제이슨형식
   const get_title = req.params.background-sound-name;
   related_search_title = get_title.replace(" ", "%");                        //검색의 띄어쓰기 해결 맨 앞 제목 한번만 가능 
@@ -47,7 +47,7 @@ try{
       });
     const user_id = await models.favorite.findAll({
       attributes:['sound_id','user_id'],
-      where :{ user_id : req.decoded.id },
+      where :{ user_id : req.decoded.user_id },
     });
     const  background_sounds_sound_id = background_sounds.map((el) => el.sound_id);
     const  user_id_sound_id = user_id.map((el) => el.sound_id);
@@ -89,10 +89,6 @@ if(result_value == ""){
   }
 });
 
-
-
-
-
 router.get('/:background-sound-id/play', async (req, res, next) => {    //완성 -> 소리페이지(소리재생)
   const Op = sequelize.Op;                                              // 리스트 안에 제이슨
  const get_title = req.params.background-sound-id;
@@ -115,20 +111,19 @@ router.get('/:background-sound-id/play', async (req, res, next) => {    //완성
 
 
 
-router.get('/:background-sound-id/favorite', verifyToken, async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(추가,삭제))      
+router.post('/:background-sound-id/favorite', verifyToken, async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(추가,삭제))      
   const get_title = parseInt(req.params.background-sound-id);        //   소리 아이디 받아오기     
-  const bool = req.params.bool;   //어디로 불린값 주는지 물어보기?
+  const is_favorite = req.body;   
   try {
-  if(bool === true){
+  if(is_favorite === true){
    await models.favorite.create({
-     // user_id: req.decoded.name,
-      user_id: 2,
-      sound_id: get_title,
+     user_id: req.decoded.user_id,
+     sound_id: get_title,
     });
   }
-  else if(bool === false){
+  else if(is_favorite === false){
    await models.favorite.destroy({    
-   where:{ user_id: req.decoded.id , sound_id: get_title},     //req.decoded.? 인지 물어보기 
+   where:{ user_id: req.decoded.user_id , sound_id: get_title},      
     });
   }
   return res.status(200);
@@ -140,7 +135,6 @@ router.get('/:background-sound-id/favorite', verifyToken, async (req, res, next)
 });
 
 module.exports = router;
-
 
 
 

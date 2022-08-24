@@ -10,11 +10,11 @@ require('dotenv').config();
 const env = process.env;
 
 const client = new Client({
-    user: process.env.DATABASE_USER,
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE_NAME,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.PORT
+    user: env.DATABASE_USER,
+    host: env.DATABASE_HOST,
+    database: env.DATABASE_NAME,
+    password: env.DATABASE_PASSWORD,
+    port: env.PORT
 });
 client.connect();
 
@@ -40,5 +40,41 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
       res.status(500);
     }
   });
+  
+  router.post('/', verifyToken , async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(삭제))      
+    const sound_id = parseInt(req.body);        //   소리 아이디 받아오기     
+    
+    try {
+     
+     await models.favorite.destroy({    
+     where:{ user_id: req.decoded.user_id , sound_id: sound_id},     
+      });
+    return res.status(200);
+    }
+   catch (error) {
+      console.error(error);  
+      res.status(500);
+    }
+  });
+
+  router.get('/:background-sound-id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)
+                                                                          // 리스트 안에 제이슨
+   const background_sound_id = parseInt(req.params.background-sound-id);
+  
+    try {
+      const authCompWords = await models.background_sound.findAll({
+         attributes:['sound_id','sound_play_url','stepping_sounds'],
+         where: { sound_id:  background_sound_id },
+        });
+        const returnData =authCompWords.map((el) => el);
+        console.log(returnData);
+        return res.status(200).json(returnData);
+    }
+   catch (error) {
+      console.error(error);  
+      res.status(500);
+    }
+  });
+
 
   module.exports = router;
