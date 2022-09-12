@@ -18,7 +18,6 @@ const client = new Client({
 });
 client.connect();
 
-
 router.get('/', verifyToken, async (req, res, next) => {              //  완료 -> 즐겨찾기페이지(소리데이터 뿌려주기) - jwt토큰 키 결정하기
     try {                                                             // 배열 안에 제이슨
       favorite_music_spread =  await models.background_sound.findAll({
@@ -26,7 +25,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
           include:[ {
             model : models.favorite,
             attributes:['sound_id'],
-            where:{  user_id : req.decoded.id },
+            where:{  user_id : req.decoded.sub },
             as:'favorites',
         }],
       });  
@@ -38,7 +37,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
       return res.status(200).json(remake_favorite_music_spread);    
     } catch (error) {
       console.error(error);  
-      res.status(500);
+      res.status(500).json({ "code": 500 });
     }
   });
  
@@ -54,7 +53,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
         });
       const user_id = await models.favorite.findAll({
         attributes:['sound_id','user_id'],
-        where :{ user_id : req.decoded.user_id },
+        where :{ user_id : req.decoded.sub  },
         });
       const  background_sounds_sound_id = background_sounds.map((el) => el.sound_id);
       const  user_id_sound_id = user_id.map((el) => el.sound_id);
@@ -73,27 +72,28 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
      }
   }
   if(result_list == ""){
-          return res.status("404");              //해당 값이 없다는거임
+          return res.status(404).json({ "code": 404 });              //해당 값이 없다는거임
         }
         return res.status(200).json(result_list);
     } catch (error) {
       console.error(error);  
-      res.status(500);
+      res.status(500).json({ "code": 500 });
     }
   });
 
+
   router.post('/', verifyToken , async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(삭제))      
-    const sound_id = parseInt(req.body);        //   소리 아이디 받아오기     
+    const sound_id = parseInt(req.body);        //소리 아이디 받아오기     
     
     try {
      await models.favorite.destroy({    
-     where:{ user_id: req.decoded.user_id , sound_id: sound_id},     
+     where:{ user_id: req.decoded.sub  , sound_id: sound_id},     
       });
-    return res.status(200);
+    return res.status(200).json({ "code":200,  "message":"ok",});
     }
    catch (error) {
       console.error(error);  
-      res.status(500);
+      res.status(500).json({ "code": 500 });
     }
   });
 
@@ -111,7 +111,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
     }
    catch (error) {
       console.error(error);  
-      res.status(500);
+      res.status(500).json({ "code": 500 });
     }
   });
 

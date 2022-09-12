@@ -45,10 +45,33 @@
 
     <form action="/favorites/search">
       <input type="text" name="favorite_post_title">
+      <input type="text" name="id4" placeholder="token">
          <button >즐찾페이지 검색하기</button>
       </form>
 
 
+      <form action="/audiobooks">
+        <input type="text" name="title000">
+           <button >오디오북 생성</button>
+        </form>
+
+        <form action="/audiobooks/delete_audiobook" >
+          <input type="text" name="audio_title00" placeholder="오디오북 제목">
+             <button >오디오북 삭제</button>
+          </form>
+
+
+        <form action="/audiobooks/addsound">
+          <input type="text" name="audiotitle" placeholder="오디오북 제목">
+          <input type="text" name="soundid0" placeholder="사운드 아이디">
+             <button >오디오북 내의 노래추가</button>
+          </form>
+
+          <form action="/audiobooks/deletesound">
+            <input type="text" name="audiotitl1" placeholder="오디오북 제목">
+            <input type="text" name="soundid000" placeholder="사운드 아이디">
+               <button >오디오북 내의 노래삭제</button>
+            </form>
 
 </div>
 </div>
