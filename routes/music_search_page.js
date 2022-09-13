@@ -36,13 +36,6 @@ background_sounds =await client.query(`select bs.sound_id as sound_id, bs.sound_
     });
   }
 });
-/*
-router.get('/:background_sound/search',verifyToken, async (req, res, next) => {
-const a = req.params.background_sound;
-res.json(a);
-});
-*/
-
 
 router.get('/:background_sound_name/search',verifyToken, async (req, res, next) => {    //완성 -> 소리페이지(소리검색) - jwt토큰 키 결정하기
   const Op = sequelize.Op;                                                    // 배열의 배열에 제이슨형식

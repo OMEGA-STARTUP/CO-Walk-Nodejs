@@ -34,7 +34,6 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
       }
   });
  
- 
   router.get('/:audio-book-title', verifyToken, async (req, res, next) => {              //  오디오북페이지(오디오북 내 노래 조회) - jwt토큰 키 결정하기
     try {              
         const audiobook_title = req.params.audio-book-title;
@@ -46,7 +45,6 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
             user_id: req.decoded.sub  
             }
             });
-
       } catch (error) {
         console.error(error);  
         res.status(500).json({ "code": 500 });
@@ -71,7 +69,6 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
       }
   });
 
-
   router.delete('/:audio-book-title', verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 삭제 ) - jwt토큰 키 결정하기
     try {              
         const audiobook_title = await req.params.audio-book-title;
@@ -86,8 +83,6 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
         res.status(500).json({ "code": 500 });
       }
   });
-
-
 
   router.put('/:audio-book-title/background-sounds/:sound-id', verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 내 노래 삭제) - jwt토큰 키 결정하기
     try {              
@@ -122,6 +117,24 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
       }
   });
 
+  router.get('/:audio_book_title/background-sounds/:background_sound_id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)
+    // 리스트 안에 제이슨
+const background_sound_id = parseInt(req.params.background_sound_id);
+const audio_book_title = req.params.audio_book_title;
+try {
+const authCompWords = await models.background_sound.findAll({
+attributes:['sound_id','sound_play_url','stepping_sounds'],
+where: { sound_id:  background_sound_id },
+});
+const returnData =authCompWords.map((el) => el);
+console.log(returnData);
+return res.status(200).json(returnData);
+}
+catch (error) {
+console.error(error);  
+res.status(500).json({ "code": 500 });
+}
+});
 
 
 

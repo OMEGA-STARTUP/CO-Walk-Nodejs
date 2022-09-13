@@ -41,9 +41,9 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
     }
   });
  
-  router.get('/:background-sound-name/search',  verifyToken, async (req, res, next) => {    //완성 -> 즐겨찾기 페이지(소리검색) - jwt토큰 키 결정하기
+  router.get('/:background_sound_name/search',  verifyToken, async (req, res, next) => {    //완성 -> 즐겨찾기 페이지(소리검색) - jwt토큰 키 결정하기
     const Op = sequelize.Op;                                                    // 배열의 배열에 제이슨형식
-    const get_title = req.params.background-sound-name;
+    const get_title = req.params.background_sound_name;
     related_search_title = get_title.replace(" ", "%");                         //검색의 띄어쓰기 해결 맨 앞 제목 한번만 가능         
   
     try{   
@@ -82,8 +82,8 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
   });
 
 
-  router.post('/', verifyToken , async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(삭제))      
-    const sound_id = parseInt(req.body);        //소리 아이디 받아오기     
+  router.put('/', verifyToken , async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(삭제))      
+    const sound_id = parseInt(req.body.sound_id);        //소리 아이디 받아오기     
     
     try {
      await models.favorite.destroy({    
@@ -97,9 +97,9 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
     }
   });
 
-  router.get('/:background-sound-id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)
+  router.get('/:background_sound_id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)
                                                                           // 리스트 안에 제이슨
-   const background_sound_id = parseInt(req.params.background-sound-id);
+   const background_sound_id = parseInt(req.params.background_sound_id);
     try {
       const authCompWords = await models.background_sound.findAll({
          attributes:['sound_id','sound_play_url','stepping_sounds'],
