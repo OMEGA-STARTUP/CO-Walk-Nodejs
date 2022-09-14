@@ -19,7 +19,41 @@ const client = new Client({
 });
 client.connect();
 
-router.post('/:audio-book-title', verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 만들기) - jwt토큰 키 결정하기
+router.get('/',verifyToken, async (req, res, next) => {    //  완료 -> 오디오북 페이지(오디오북 뿌려주기)테스트 완료
+try {
+const audio_book_title_of_users = await models.audio_book.findAll({
+attributes:['audio_book_title'],
+where: { user_id: req.decoded.sub },
+});
+console.log(audio_book_title_of_users);
+return res.status(200).json(audio_book_title_of_users);
+}
+catch (error) {
+console.error(error);  
+res.status(500).json({ "code": 500 });
+}
+});
+
+router.get('/:audio_book_title', verifyToken, async (req, res, next) => {              //  완료 -> 오디오북페이지(오디오북 내 노래 조회)테스트 완료 
+  try {              
+      const audiobook_title = req.params.audio_book_title;
+                                                              
+      select_audiobook_sounds = await models.audio_sound_playlist.findAll({
+          attributes:['sound_id'],
+          where: { 
+          audio_book_title: audiobook_title,
+          user_id: req.decoded.sub  
+          }
+          });
+          return res.status(200).json(select_audiobook_sounds);
+
+    } catch (error) {
+      console.error(error);  
+      res.status(500).json({ "code": 500 });
+    }
+});
+
+router.post('/:audio-book-title', verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 만들기)
     try {              
         const audiobook_title = req.params.audio-book-title;
                                                                    // 배열 안에 제이슨
@@ -33,24 +67,38 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
         res.status(500).json({ "code": 500 });
       }
   });
- 
-  router.get('/:audio-book-title', verifyToken, async (req, res, next) => {              //  오디오북페이지(오디오북 내 노래 조회) - jwt토큰 키 결정하기
+
+  router.delete('/:audio_book_title', verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 삭제 ) - jwt토큰 키 결정하기
     try {              
-        const audiobook_title = req.params.audio-book-title;
-                                                                
-        select_audiobook_sounds = await models.audio_sound_playlist.findAll({
-            attributes:[''],
-            where: { 
-            audio_book_title: audiobook_title,
-            user_id: req.decoded.sub  
-            }
+        const audiobook_title = await req.params.audio_book_title;
+     
+        await models.audio_book.destroy({
+           where:{ audio_book_title: audiobook_title,
+            user_id: req.decoded.sub,}      
             });
+            return res.status(200).json({ "code":200,  "message":"ok",});
       } catch (error) {
         console.error(error);  
         res.status(500).json({ "code": 500 });
       }
   });
 
+  router.put('/:audio_book_title', verifyToken, async (req, res, next) => {              //  오디오북페이지(오디오북 내 노래 조회) - jwt토큰 키 결정하기
+    try {              
+        const audiobook_title = req.params.audio_book_title;
+        const revised_title = req.body.revised_title;
+
+        select_audiobook_sounds = await models.audio_book.update({
+          audio_book_title: revised_title },
+          {  where: { user_id: req.decoded.sub,audio_book_title: audiobook_title}
+            });
+            return res.status(200).json({ "code":200,  "message":"ok",});
+      } catch (error) {
+        console.error(error);  
+        res.status(500).json({ "code": 500 });
+      }
+  });
+ 
   router.post('/:audio-book-title/background-sounds/:sound-id', verifyToken, async (req, res, next) => {              // 완료 오디오북페이지(오디오북 노래추가) - jwt토큰 키 결정하기
     try {              
         const audiobook_title = await req.params.audio-book-title;
@@ -63,21 +111,6 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
             order_numb: 0,      
             });
         return res.status(200).json({ "code":200,  "message":"ok",});
-      } catch (error) {
-        console.error(error);  
-        res.status(500).json({ "code": 500 });
-      }
-  });
-
-  router.delete('/:audio-book-title', verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 삭제 ) - jwt토큰 키 결정하기
-    try {              
-        const audiobook_title = await req.params.audio-book-title;
-     
-        await models.audio_book.destroy({
-           where:{ audio_book_title: audiobook_title,
-            user_id: req.decoded.sub,}      
-            });
-            return res.status(200).json({ "code":200,  "message":"ok",});
       } catch (error) {
         console.error(error);  
         res.status(500).json({ "code": 500 });
@@ -101,41 +134,26 @@ router.post('/:audio-book-title', verifyToken, async (req, res, next) => {      
       }
   });
 
-  router.put('/:audio_book_title', verifyToken, async (req, res, next) => {              //  오디오북페이지(오디오북 내 노래 조회) - jwt토큰 키 결정하기
-    try {              
-        const audiobook_title = req.params.audio_book_title;
-        const revised_title = req.body.revised_title;
-
-        select_audiobook_sounds = await models.audio_book.update({
-          audio_book_title: revised_title },
-          {  where: { user_id: req.decoded.sub,audio_book_title: audiobook_title}
-            });
-            return res.status(200).json({ "code":200,  "message":"ok",});
-      } catch (error) {
+ 
+/*
+  router.get('/audio-book-title/background-sounds/:background_sound_id/play', async (req, res, next) => {    //   -> 오디오북페이지(소리재생)
+    // 리스트 안에 제이슨
+        const background_sound_id = parseInt(req.params.background_sound_id);
+     
+        try {
+        const authCompWords = await models.background_sound.findAll({
+        attributes:['sound_id','sound_play_url','stepping_sounds'],
+        where: { sound_id:  background_sound_id },
+        });
+        const returnData =authCompWords.map((el) => el);
+        console.log(returnData);
+        return res.status(200).json(returnData);
+        }
+        catch (error) {
         console.error(error);  
         res.status(500).json({ "code": 500 });
-      }
-  });
-
-  router.get('/:audio_book_title/background-sounds/:background_sound_id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)
-    // 리스트 안에 제이슨
-const background_sound_id = parseInt(req.params.background_sound_id);
-const audio_book_title = req.params.audio_book_title;
-try {
-const authCompWords = await models.background_sound.findAll({
-attributes:['sound_id','sound_play_url','stepping_sounds'],
-where: { sound_id:  background_sound_id },
+        }
 });
-const returnData =authCompWords.map((el) => el);
-console.log(returnData);
-return res.status(200).json(returnData);
-}
-catch (error) {
-console.error(error);  
-res.status(500).json({ "code": 500 });
-}
-});
-
-
+*/
 
   module.exports = router;

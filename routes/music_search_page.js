@@ -21,7 +21,7 @@ const Sequelize = require('sequelize');
 client.connect();
 
 
-router.get('/',verifyToken, async (req, res, next) => {               //완성 -> 소리페이지(소리데이터 뿌려주기) - jwt토큰 키 결정하기
+router.get('/',verifyToken, async (req, res, next) => {               //완성 -> 소리페이지(소리데이터 뿌려주기) 테스트 완료
   try {                                                               // 배열 안에 제이슨형식
     
 
@@ -37,7 +37,7 @@ background_sounds =await client.query(`select bs.sound_id as sound_id, bs.sound_
   }
 });
 
-router.get('/:background_sound_name/search',verifyToken, async (req, res, next) => {    //완성 -> 소리페이지(소리검색) - jwt토큰 키 결정하기
+router.get('/:background_sound_name/search',verifyToken, async (req, res, next) => {    //완성 -> 소리페이지(소리검색) 테스트 완료
   const Op = sequelize.Op;                                                    // 배열의 배열에 제이슨형식
   const get_title = req.params.background_sound_name;
   related_search_title = get_title.replace(" ", "%");                        //검색의 띄어쓰기 해결 맨 앞 제목 한번만 가능 
@@ -93,7 +93,7 @@ if(result_value == ""){
 });
 
 
-router.get('/:background_sound_id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)
+router.get('/:background_sound_id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)테스트 완료
                                                                         // 리스트 안에 제이슨
 const background_sound_id = parseInt(req.params.background_sound_id);
 try {
@@ -111,7 +111,7 @@ res.status(500).json({ "code": 500 });
 }
 });
 
-router.post('/:background_sound_id/favorite', verifyToken, async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(추가,삭제))      
+router.post('/:background_sound_id/favorite', verifyToken, async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(추가,삭제))테스트 완료      
   const get_title = parseInt(req.params.background_sound_id);        //   소리 아이디 받아오기     
   const is_favorite = req.body.is_favorite;   
   try {
