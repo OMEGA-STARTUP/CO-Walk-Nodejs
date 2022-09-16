@@ -34,7 +34,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
       delete json['favorites'];
       return json
     });
-      return res.status(200).json(remake_favorite_music_spread);    
+      return res.status(200).json({remake_favorite_music_spread, "code": 200});    
     } catch (error) {
       console.error(error);  
       res.status(500).json({ "code": 500 });
@@ -74,7 +74,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
   if(result_list == ""){
           return res.status(404).json({ "code": 404 });              //해당 값이 없다는거임
         }
-        return res.status(200).json(result_list);
+        return res.status(200).json({result_list, "code": 200});
     } catch (error) {
       console.error(error);  
       res.status(500).json({ "code": 500 });
@@ -107,7 +107,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
         });
         const returnData =authCompWords.map((el) => el);
         console.log(returnData);
-        return res.status(200).json(returnData);
+        return res.status(200).json({returnData, "code": 200});
     }
    catch (error) {
       console.error(error);  

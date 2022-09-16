@@ -26,7 +26,7 @@ router.get('/',verifyToken, async (req, res, next) => {               //완성 -
     
 
 background_sounds =await client.query(`select bs.sound_id as sound_id, bs.sound_name as sound_name, bs.sound_play_time as sound_play_time, bs.sound_img_url as sound_img_url, bs.sound_play_url as sound_play_url, bs.sound_src_url as sound_src_url, CASE WHEN f.user_id is null THEN false else true end isFavorite from (select * from favorite where user_id = ${ req.decoded.sub }) f right outer join background_sound bs on f.sound_id = bs.sound_id; `);
-    //const returnData =background_sounds.map((el) => el);
+   
     console.log(background_sounds);
     return res.status(200).json(background_sounds.rows);  
   } catch (error) {
@@ -85,7 +85,7 @@ for(var i of background_sounds_sound_id){
 if(result_value == ""){
         return res.status(404).json({ "code":404 });              //해당 값이 없다는거임
       }
-      return res.status(200).json(result_value);
+      return res.status(200).json({result_value, "code": 200});
   } catch (error) {
     console.error(error);  
     res.status(500).json({ "code": 500 });
@@ -103,7 +103,7 @@ where: { sound_id:  background_sound_id },
 });
 const returnData =authCompWords.map((el) => el);
 console.log(returnData);
-return res.status(200).json(returnData);
+return res.status(200).json({returnData, "code": 200});
 }
 catch (error) {
 console.error(error);  

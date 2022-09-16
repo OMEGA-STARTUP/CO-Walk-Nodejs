@@ -1,6 +1,13 @@
 const a =['0','1','2'];
 const c =['0','1'];
 var d = [];
+
+if (1 in a){
+    console.log("성공");
+}
+else {
+    console.log("실패");
+}
 /*
 console.log(a.length);
 console.log(c.length);
@@ -25,7 +32,7 @@ console.log(d);
 //b= {isfavorite:"true"};
 //b.color = "red";
 //a.push(b);
-
+/*
 abc = [[{name:"Lee", age:23}],[{name:"Jang", age:33}]]
 
 
@@ -39,6 +46,6 @@ else{
     console.log(false);
 }
 
-
+*/
 //aaa = abc[0];
 //console.log(abc[0][0].age);
