@@ -1,3 +1,4 @@
+/*
 const a =['0','1','2'];
 const c =['0','1'];
 var d = [];
@@ -8,7 +9,7 @@ if (1 in a){
 else {
     console.log("실패");
 }
-/*
+
 console.log(a.length);
 console.log(c.length);
 const ac = (a,c) =>{
@@ -49,3 +50,8 @@ else{
 */
 //aaa = abc[0];
 //console.log(abc[0][0].age);
+
+
+const str = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjAsInB3ZCI6ImNuZXd3IiwiaWF0IjoxNjYzMzg5Nzc4LCJleHAiOjE2NjMzOTMzNzgsImlzcyI6IkxlZSJ9.KmMfbgxfxF6Q8q4vHgAbSwHdWegL-LVyij_zdCzFT3o'
+const string = str.substr(7);
+console.log(string);

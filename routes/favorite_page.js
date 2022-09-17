@@ -18,7 +18,8 @@ const client = new Client({
 });
 client.connect();
 
-router.get('/', verifyToken, async (req, res, next) => {              //  완료 -> 즐겨찾기페이지(소리데이터 뿌려주기)테스트 완료
+router.route('/')
+.get(verifyToken, async (req, res, next) => {              //  완료 -> 즐겨찾기페이지(소리데이터 뿌려주기)테스트 완료
     try {                                                             // 배열 안에 제이슨
       favorite_music_spread =  await models.background_sound.findAll({
           attributes:['sound_id','sound_name','sound_play_time','sound_img_url'],    
@@ -37,7 +38,21 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
       return res.status(200).json({remake_favorite_music_spread, "code": 200});    
     } catch (error) {
       console.error(error);  
-      res.status(500).json({ "code": 500 });
+      return res.status(500).json({ "code": 500 });
+    }
+  })
+  .put( verifyToken , async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(삭제))테스트 완료      
+    const sound_id = parseInt(req.body.sound_id);        //소리 아이디 받아오기     
+    
+    try {
+     await models.favorite.destroy({    
+     where:{ user_id: req.decoded.sub  , sound_id: sound_id},     
+      });
+    return res.status(200).json({ "code":200,  "message":"ok",});
+    }
+   catch (error) {
+      console.error(error);  
+      return res.status(500).json({ "code": 500 });
     }
   });
  
@@ -71,31 +86,18 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
       result_list.push(remake_favorite_music_spread );
      }
   }
-  if(result_list == ""){
-          return res.status(404).json({ "code": 404 });              //해당 값이 없다는거임
-        }
+  if(result_list == "" || result_list == null || result_list == undefined || ( result_list!= null && typeof result_list == "object" && !Object.keys(result_list).length))
+  {
+    return res.status(404).json({"code": 404, "message":"no result"});
+  }
         return res.status(200).json({result_list, "code": 200});
     } catch (error) {
       console.error(error);  
-      res.status(500).json({ "code": 500 });
+      return res.status(500).json({ "code": 500 });
     }
   });
 
 
-  router.put('/', verifyToken , async (req, res, next) => {     //  완료 -> 소리찾기(즐겨찾기(삭제))테스트 완료      
-    const sound_id = parseInt(req.body.sound_id);        //소리 아이디 받아오기     
-    
-    try {
-     await models.favorite.destroy({    
-     where:{ user_id: req.decoded.sub  , sound_id: sound_id},     
-      });
-    return res.status(200).json({ "code":200,  "message":"ok",});
-    }
-   catch (error) {
-      console.error(error);  
-      res.status(500).json({ "code": 500 });
-    }
-  });
 
   router.get('/:background_sound_id/play', async (req, res, next) => {    //  완료 -> 즐겨찾기페이지(소리재생)테스트 완료
                                                                           // 리스트 안에 제이슨
@@ -111,7 +113,7 @@ router.get('/', verifyToken, async (req, res, next) => {              //  완료
     }
    catch (error) {
       console.error(error);  
-      res.status(500).json({ "code": 500 });
+      return res.status(500).json({ "code": 500 });
     }
   });
 

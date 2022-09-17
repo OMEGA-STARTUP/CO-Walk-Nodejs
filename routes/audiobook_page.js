@@ -54,11 +54,10 @@ router.route('/:audio_book_title')
     }
 })
 
-.post( verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 만들기)테스트 완료
+.post(verifyToken, async (req, res, next) => {              //  완료 오디오북페이지(오디오북 만들기)테스트 완료
     try {              
         const audiobook_title = await req.params.audio_book_title;
 
-      
         await  models.audio_book.create({
             audio_book_title: audiobook_title,
             user_id: req.decoded.sub,

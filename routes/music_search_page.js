@@ -24,7 +24,6 @@ client.connect();
 router.get('/',verifyToken, async (req, res, next) => {               //완성 -> 소리페이지(소리데이터 뿌려주기) 테스트 완료
   try {                                                               // 배열 안에 제이슨형식
     
-
 background_sounds =await client.query(`select bs.sound_id as sound_id, bs.sound_name as sound_name, bs.sound_play_time as sound_play_time, bs.sound_img_url as sound_img_url, bs.sound_play_url as sound_play_url, bs.sound_src_url as sound_src_url, CASE WHEN f.user_id is null THEN false else true end isFavorite from (select * from favorite where user_id = ${ req.decoded.sub }) f right outer join background_sound bs on f.sound_id = bs.sound_id; `);
    
     console.log(background_sounds);
@@ -41,7 +40,7 @@ router.get('/:background_sound_name/search',verifyToken, async (req, res, next) 
   const Op = sequelize.Op;                                                    // 배열의 배열에 제이슨형식
   const get_title = req.params.background_sound_name;
   related_search_title = get_title.replace(" ", "%");                        //검색의 띄어쓰기 해결 맨 앞 제목 한번만 가능 
-          
+       
 try{   
     const background_sounds = await  models.background_sound.findAll({
       attributes:['sound_id','sound_name','sound_play_time','sound_img_url'],
@@ -81,10 +80,11 @@ for(var i of background_sounds_sound_id){
       result_value.push(remake_favorite_music_spread);   
   }
 }
+if(result_value == "" || result_value == null || result_value == undefined || ( result_value!= null && typeof result_value == "object" && !Object.keys(result_value).length))
+{
+  return res.status(404).json({"code": 404, "message":"no result"});
+}
 
-if(result_value == ""){
-        return res.status(404).json({ "code":404 });              //해당 값이 없다는거임
-      }
       return res.status(200).json({result_value, "code": 200});
   } catch (error) {
     console.error(error);  
@@ -97,13 +97,12 @@ router.get('/:background_sound_id/play', async (req, res, next) => {    //  완�
                                                                         // 리스트 안에 제이슨
 const background_sound_id = parseInt(req.params.background_sound_id);
 try {
-const authCompWords = await models.background_sound.findAll({
+const play_information = await models.background_sound.findAll({
 attributes:['sound_id','sound_play_url','stepping_sounds'],
 where: { sound_id:  background_sound_id },
 });
-const returnData =authCompWords.map((el) => el);
-console.log(returnData);
-return res.status(200).json({returnData, "code": 200});
+console.log(play_information);
+return res.status(200).json({play_information, "code": 200});
 }
 catch (error) {
 console.error(error);  
