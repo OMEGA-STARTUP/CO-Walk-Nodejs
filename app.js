@@ -29,7 +29,7 @@ function jwtmake(){
     "sub": 0,
     "pwd":"cneww",
   }, process.env.JWT_SECRET,{
-    expiresIn:'60m',
+    expiresIn:'600m',
     issuer:'Lee',
   })
   console.log("토큰 생성", token);
@@ -67,6 +67,9 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
+
+module.exports = app;
+/*
 app.listen(app.get('port'), () => {
   console.log(app.get('port'), '번 포트에서 대기중');
-});
+});*/
