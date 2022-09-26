@@ -29,7 +29,7 @@ function jwtmake(){
     "sub": 0,
     "pwd":"cneww",
   }, process.env.JWT_SECRET,{
-    expiresIn:'600m',
+    expiresIn:'48h',
     issuer:'Lee',
   })
   console.log("토큰 생성", token);
