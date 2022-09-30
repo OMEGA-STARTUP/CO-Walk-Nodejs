@@ -34,8 +34,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    sound_background_img_url: {
-      type: DataTypes.STRING(255),
+    profile_background_id: {
+      type: DataTypes.BIGINT,
       allowNull: true
     }
   }, {

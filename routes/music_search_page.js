@@ -1,21 +1,18 @@
 const express = require('express');
-const http = require('http');
 const  models  = require('../models/index');
 const sequelize = require('sequelize');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const { verifyToken } = require("./middlewares");
 const { Client } = require('pg');
 require('dotenv').config();
 const env = process.env;
-const Sequelize = require('sequelize');
 
   const client = new Client({
     user: env.DATABASE_USER,
     host: env.DATABASE_HOST,
     database: env.DATABASE_NAME,
     password: env.DATABASE_PASSWORD,
-    port: env.PORT
+    port: env.DATABASE_PORT
 });
 
 client.connect();
