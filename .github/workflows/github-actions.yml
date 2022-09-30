@@ -22,7 +22,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
-    # Firebase SDK 세팅
+    # ENV SDK 세팅
     - name: Setting env file
       run: |
         touch .env
