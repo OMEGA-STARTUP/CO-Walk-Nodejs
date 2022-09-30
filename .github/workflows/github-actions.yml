@@ -2,7 +2,7 @@ name: CO-Walk CI/CD - Nodejs CI with NPM and CD with Docker & AWS EC2
 
 on:
   push:
-    branches: [ "Master" ]
+    branches: [ "master" ]
 
 permissions:
   contents: read
