@@ -1,19 +1,21 @@
 const express = require('express');
 const morgan = require('morgan');
-const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
+const helmet = require('helmet');
+const hpp = require('hpp');
 
 const musicsearchRouter = require('./routes/music_search_page');
 const favoriteRouter = require('./routes/favorite_page');
 const audiobookRouter = require('./routes/audiobook_page');
 const healthCheckRouter = require('./routes/health_check');
-
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
 
-app.use(morgan('dev'));
+app.use(morgan('combined'));
+app.use(helmet({contentSecurityPolicy:false}));
+app.use(hpp());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
