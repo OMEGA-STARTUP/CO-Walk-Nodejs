@@ -25,7 +25,6 @@
 
 - **PostgreSQL (Release 14.4)**
 
-
 ## 📝 기능 정의서(Functional Details)
 
 [기능 정의서](./README_files/functional_specification.docx)
@@ -42,6 +41,4 @@
 
 [API 명세서](https://app.swaggerhub.com/apis/CokeLee777/CO-Walk/1.0.0)
 
-## 📐 트러블 슈팅(Trouble Shooting)
 
-- 추가 예정
