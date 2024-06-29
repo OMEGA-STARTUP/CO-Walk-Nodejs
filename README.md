@@ -7,7 +7,7 @@
 |---|---|
 | 운영체제 | Mac OS |
 | 개발도구 | VSCode, Postman, Swagger |
-| 프레임워크 | Node.js 18.6 |
+| 프레임워크 | Node.js 18.6, Express.js |
 | 데이터베이스 | PostgreSQL (Release 14.4) |
 | 버전 관리 | Github, Git |
 | 배포 및 운영 | AWS, Docker, Github Actions  |
