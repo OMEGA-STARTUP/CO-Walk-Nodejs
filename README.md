@@ -25,6 +25,14 @@
 
 - **PostgreSQL (Release 14.4)**
 
+### 클라우드 서비스(Amazon Web Service)
+  
+  
+  - AWS EC2
+  - AWS RDS
+  - AWS S3
+  - AWS Route 53
+  - AWS Elastic Load Balancing
 ## 📝 기능 정의서(Functional Details)
 
 [기능 정의서](./README_files/functional_specification.docx)
