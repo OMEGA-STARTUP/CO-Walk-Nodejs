@@ -33,17 +33,16 @@
   - AWS S3
   - AWS Route 53
   - AWS Elastic Load Balancing
-## 📝 기능 정의서(Functional Details)
 
-[기능 정의서](./README_files/functional_specification.docx)
 
 ## 📝 테이블 정의서(Entity Details)
+[table_specification.xlsx](https://github.com/user-attachments/files/19531873/table_specification.xlsx)
 
-[테이블 정의서](./README_files/table_specification.xlsx)
 
 ## 🔗 엔티티-관계 모델(Entity Relationship Diagram)
 
-![ERD](./README_files/ERD.png)
+<img width="1010" alt="ERD" src="https://github.com/user-attachments/assets/5bd4c1e7-7e33-495f-a129-19094b796bb7" />
+
 
 ## 📌 API 명세서(API Specification)
 
